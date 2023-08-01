@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Character's Journey - Story Map</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        #story {
+            padding: 20px;
+        }
+        h1 {
+            margin-top: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <h1>Character's Journey - Story Map</h1>
+    <div id="map"></div>
+    <div id="story">
+        <h2>Event: Introduction</h2>
+        <p>
+            Our character starts their journey from their hometown, excited and ready to explore the world.
+        </p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        function createMap() {
+            var map = L.map("map").setView([0, 0], 2); // Centered on the world map
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+                maxZoom: 18
+            }).addTo(map);
+
+            // Array of locations and events
+            var locations = [
+                {
+                    name: "Hometown",
+                    coordinates: [40, -100],
+                    event: "Our character starts their journey from their hometown, excited and ready to explore the world."
+                },
+                {
+                    name: "City 1",
+                    coordinates: [48, 2],
+                    event: "Our character arrives in City 1, a bustling metropolis with a vibrant nightlife."
+                },
+                {
+                    name: "City 2",
+                    coordinates: [-33, 151],
+                    event: "In City 2, our character meets an old friend who offers valuable advice for the journey ahead."
+                },
+                {
+                    name: "City 3",
+                    coordinates: [35, 139],
+                    event: "Our character reaches City 3, a serene coastal town where they find inner peace."
+                }
+            ];
+
+            // Create markers for each location and add click event
+            locations.forEach(function(location) {
+                var marker = L.marker(location.coordinates).addTo(map);
+                marker.bindPopup("<b>" + location.name + "</b>").on("click", function() {
+                    updateStory(location);
+                });
+            });
+
+            // Function to update the story content when a location is clicked
+            function updateStory(location) {
+                var storyDiv = document.getElementById("story");
+                storyDiv.innerHTML = "<h2>Event: " + location.name + "</h2><p>" + location.event + "</p>";
+            }
+        }
+
+        createMap();
+    </script>
+</body>
+</html>
